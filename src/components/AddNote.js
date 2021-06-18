@@ -6,11 +6,16 @@ const AddNote = () => {
     const [title, setTitle] = useState('');
     const [body, setBody] = useState('');
     const [category, setCategory] = useState('programming');
+    const [errors, setErrors] = useState(false);
     const history = useHistory();
     const { id } = useParams();
 
     const saveNote = (e) => {
         e.preventDefault();
+        if (!title || !body) {
+            setErrors(true);
+            return;
+        }
         const note = { title, body, category, id };
         if (id) {
             //call update method
@@ -48,7 +53,10 @@ const AddNote = () => {
     }, [id]);
     return (
         <div className="create">
-            <div className="text-center"><h5>{id ? "Update Note" : "Add new Note"}</h5></div>
+            <div className="text-center">
+                <h5>{id ? "Update Note" : "Add new Note"}</h5>
+                {errors ? <span style={{ color: 'red', fontStyle: 'italic' }}>Please enter the mandatory fields</span> : null}
+            </div>
             <form>
                 <div className="form-group">
                     <label htmlFor="title">Note Title:<sup>*</sup> </label>
